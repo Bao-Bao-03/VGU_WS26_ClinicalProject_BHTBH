@@ -28,7 +28,5 @@ class OpenAIEmbedder(EmbeddingModel):
 
     def encode(self, texts: List[str]) -> np.ndarray:
         import openai
-        result = openai.Embedding.create(
-            input=texts, model=self.model
-        )
+        result = openai.Embedding.create(input=texts, model=self.model)
         return np.array([item['embedding'] for item in result['data']])
