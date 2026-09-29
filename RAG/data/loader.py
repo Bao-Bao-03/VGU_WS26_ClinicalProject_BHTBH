@@ -18,6 +18,16 @@ class TropicalDiseaseLoader:
         for disease in self.diseases:
             # joins the root path to each disease folder
             disease_path = self.root_path / disease
+
+            # skip missing disease folders
+            if not disease_path.exists():
+                continue
+            # try cases.csv first then cases_without_image.csv
+            cases_file = disease_path / 'cases.csv'
+            if not cases_file.exists():
+                cases_file = disease_path / 'cases_without_image.csv'
+            if not cases_file.exists():
+                continue
             
             # load cases description of a disease
             cases_df = pd.read_csv(disease_path / 'cases.csv')
