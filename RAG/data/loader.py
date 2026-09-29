@@ -6,7 +6,7 @@ from typing import List, Dict
 
 class TropicalDiseaseLoader:
     def __init__(self, root_path: str):
-        // create a Path object where the disease folders will be stored
+        # create a Path object where the disease folders will be stored
         self.root_path = Path("Demos/tropical_diseases_dataset")
         
         self.diseases = ['dengue', 'malaria', 'leptospirosis','melioidosis', 
@@ -16,13 +16,13 @@ class TropicalDiseaseLoader:
         all_cases = []
         
         for disease in self.diseases:
-            // joins the root path to each disease folder
+            # joins the root path to each disease folder
             disease_path = self.root_path / disease
             
-            // load cases of a disease
+            # load cases description of a disease
             cases_df = pd.read_csv(disease_path / 'cases.csv')
             
-            // load images
+            # load images
             image_meta = {}
             img_file = disease_path / 'image_metadata.json'
             if img_file.exists():
@@ -34,7 +34,7 @@ class TropicalDiseaseLoader:
                                 image_meta[item['case_id']] = []
                             image_meta[item['case_id']].append(item)
             
-            // Combine
+            # combine cases and images
             for _, row in cases_df.iterrows():
                 case_dict = row.to_dict()
                 case_dict['disease'] = disease
@@ -43,7 +43,7 @@ class TropicalDiseaseLoader:
         
         return all_cases
 
-// loader execution
+# loader execution
 loader = TriopicalDiseaseLoader('Demos/tropical_diseases_dataset')
 all_cases = loader.load_cases()
 print(f"Loaded {len(all_cases)} cases from {len(loader.diseases)} diseases")
