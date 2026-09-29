@@ -1,0 +1,48 @@
+from pathlib import Path
+
+import numpy as np
+
+from RAG.data.loader import TropicalDiseaseLoader
+from RAG.embeddings.models import BioBERTEmbedder
+
+
+DATASET_PATH = Path("Demos/tropical_diseases_dataset")
+
+
+def test_loader_reads_tropical_disease_dataset():
+    loader = TropicalDiseaseLoader(str(DATASET_PATH))
+    cases = loader.load_cases()
+
+    assert isinstance(cases, list)
+    assert len(cases) > 0
+
+    first_case = cases[0]
+    assert "disease" in first_case
+    assert "image_meta" in first_case
+
+
+def test_loader_contains_expected_diseases():
+    loader = TropicalDiseaseLoader(str(DATASET_PATH))
+    cases = loader.load_cases()
+
+    diseases = {case["disease"] for case in cases}
+
+    expected_diseases = {"dengue", "malaria", "leptospirosis", "melioidosis",
+        "neurocysticercosis", "scrub_typhus", "typhoid", "zika"}
+
+    assert diseases.intersection(expected_diseases)
+
+
+def test_biobert_embedder():
+    loader = TropicalDiseaseLoader(str(DATASET_PATH))
+    cases = loader.load_cases()
+
+    texts = [str(case.get("case_description", case)) for case in cases[:2]]
+
+    embedder = BioBERTEmbedder()
+    embeddings = embedder.encode(texts)
+
+    assert isinstance(embeddings, np.ndarray)
+    assert embeddings.shape[0] == len(texts)
+    assert embeddings.shape[1] == 768
+    assert np.isfinite(embeddings).all()
