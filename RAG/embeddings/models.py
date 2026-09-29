@@ -6,7 +6,7 @@ class EmbeddingModel:
     def encode(self, texts: List[str]) -> np.ndarray:
         raise NotImplementedError
 
-class BioLinkerBERTEmbedder(EmbeddingModel):
+class BioBERTEmbedder(EmbeddingModel):
     #  we use BioLinkerBERT model (recommended for medical text)
     def __init__(self):
         from sentence_transformers import SentenceTransformer
