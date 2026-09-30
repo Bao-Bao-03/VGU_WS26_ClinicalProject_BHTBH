@@ -54,6 +54,6 @@ class TropicalDiseaseLoader:
         return all_cases
 
 # loader execution
-loader = TriopicalDiseaseLoader('Demos/tropical_diseases_dataset')
+loader = TropicalDiseaseLoader('Demos/tropical_diseases_dataset')
 all_cases = loader.load_cases()
 print(f"Loaded {len(all_cases)} cases from {len(loader.diseases)} diseases")
